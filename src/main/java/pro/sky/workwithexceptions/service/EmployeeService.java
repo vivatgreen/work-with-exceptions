@@ -2,6 +2,7 @@ package pro.sky.workwithexceptions.service;
 
 import pro.sky.workwithexceptions.Employee;
 
+
 public interface EmployeeService {
     int numberEmployees();
 
@@ -10,4 +11,5 @@ public interface EmployeeService {
     String removeEmployee(String firstName, String lastName);
 
     Employee findEmployee(String firstName, String lastName);
+
 }
