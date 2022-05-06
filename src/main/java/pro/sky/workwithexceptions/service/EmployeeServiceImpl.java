@@ -1,6 +1,7 @@
 package pro.sky.workwithexceptions.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.workwithexceptions.BadEmployeeExceptions;
 import pro.sky.workwithexceptions.Employee;
 import pro.sky.workwithexceptions.NotFoundException;
 import pro.sky.workwithexceptions.OverflowArrayException;
@@ -38,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 @Override
     public String removeEmployee(String firstName, String lastName) {
         if (numberEmployees() == 0) {
-            throw new NotFoundException();
+            throw new BadEmployeeExceptions();
         }
         for (int i = 0; i < employees.length; i++) {
             if (employees[i].getFirstName().equals(firstName) && employees[i].getLastName().equals(lastName)) {
@@ -46,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 return (firstName + " " + lastName);
             }
         }
-        throw new NotFoundException();
+        throw new BadEmployeeExceptions();
     }
 @Override
     public Employee findEmployee(String firstName, String lastName) {
