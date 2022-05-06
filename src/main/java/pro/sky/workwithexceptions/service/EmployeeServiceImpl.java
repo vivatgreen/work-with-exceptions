@@ -7,7 +7,7 @@ import pro.sky.workwithexceptions.OverflowArrayException;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private Employee[] employees = new Employee[5];
+    private Employee[] employees = new Employee[2];
 
 @Override
     public int numberEmployees() {
