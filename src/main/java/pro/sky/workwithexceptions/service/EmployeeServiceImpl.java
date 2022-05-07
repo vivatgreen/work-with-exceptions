@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 @Override
     public String addEmployee(String firstName, String lastName) {
         if (numberEmployees() == employees.length) {
-            throw new OverflowArrayException();
+            throw new BadEmployeeExceptions();
         }
         int i = 0;
         for (; i < employees.length; i++) {
