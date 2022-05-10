@@ -1,10 +1,10 @@
-package pro.sky.workwithexceptions;
+package pro.sky.workwithexceptions.Data;
 
 import java.util.Objects;
 
 public class Employee {
-    protected String firstName;
-    protected String lastName;
+    private final String firstName;
+    private final String lastName;
 
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
@@ -14,6 +14,7 @@ public class Employee {
     public String getFirstName() {
         return firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
@@ -23,7 +24,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return lastName.equals(employee.lastName) && firstName.equals(employee.firstName);
+        return firstName.equals(employee.firstName) && lastName.equals(employee.lastName);
     }
 
     @Override
@@ -33,6 +34,10 @@ public class Employee {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return "Сотрудник {" +
+                "Фамилия ='" + firstName + '\'' +
+                ", Имя='" + lastName + '\'' +
+                '}';
     }
 }
+
