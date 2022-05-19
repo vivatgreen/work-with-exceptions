@@ -1,75 +1,64 @@
 package pro.sky.workwithexceptions.Service;
 
-import org.springframework.stereotype.Service;
+import pro.sky.workwithexceptions.Expceptions.HasAlreadyBeenAddedException;
+import pro.sky.workwithexceptions.Expceptions.NotFoundException;
 import pro.sky.workwithexceptions.Data.Employee;
-import pro.sky.workwithexceptions.Expceptions.BadEmployeeExceptions;
-import pro.sky.workwithexceptions.Expceptions.OverflowArrayException;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employees = new ArrayList<>(5);
 
-    private boolean isNotValue(String a, String b) {
-        return (a.isEmpty() || b.isEmpty());
+    private final Map<String,Employee> employees = new HashMap<>();
+
+    @Override
+    public String addEmployee(String firstName, String lastName, int salary, int departmentId) {
+
+        Employee addingEmployee = new Employee(firstName, lastName, salary, departmentId);
+
+        String keyForMap = firstName + lastName;
+
+        if (employees.containsKey(keyForMap)) {
+            throw new HasAlreadyBeenAddedException("Этот сотрудник уже был добавлен");
+        }
+
+        employees.put(keyForMap,addingEmployee);
+        return "Сотрудник " + addingEmployee.getFirstName() + " " + addingEmployee.getLastName() + " успешно создан";
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
-        if (isNotValue(firstName, lastName)) {
-            throw new BadEmployeeExceptions();
-        }
+    public String removeEmployee(String firstName, String lastName) {
+        Employee removingEmployee = new Employee(firstName, lastName);
 
-        for (Employee e : employees) {
-            if (e.getFirstName().equals(firstName) && e.getLastName().equals(lastName)) {
-                throw new BadEmployeeExceptions();
-            }
-        }
+        String keyForMap = firstName + lastName;
 
-        Employee employee = new Employee(firstName, lastName);
-        employees.add(employee);
-        System.out.println("Сотрудник " + employee.getFirstName() + " " + employee.getLastName() + " добавлен.");
-        return employee;
-    }
-
-    @Override
-    public Employee removeEmployee(String firstName, String lastName) {
-        if (isNotValue(firstName, lastName)) {
-            throw new BadEmployeeExceptions();
+        if (!employees.containsKey(keyForMap)) {
+            throw new NotFoundException ("Мы не можем найти этого сотрудника");
         }
+        employees.remove(keyForMap);
 
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getFirstName().equals(firstName) && employees.get(i).getLastName().equals(lastName)) {
-                employees.remove(i);
-                Employee employee = new Employee(firstName, lastName);
-                System.out.println("Сотрудник " + employee.getFirstName() + " " + employee.getLastName() + " удален.");
-                return employee;
-            }
-        }
-        throw new OverflowArrayException();
+        return "Сотрудник " + removingEmployee.getFirstName() + " " + removingEmployee.getLastName() + " успешно удален";
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        if (isNotValue(firstName, lastName)) {
-            throw new BadEmployeeExceptions();
+
+        String keyForMap = firstName + lastName;
+
+        if (!employees.containsKey(keyForMap)) {
+            throw new NotFoundException ("Мы не можем найти этого сотрудника");
         }
 
-        for (Employee e : employees) {
-            if (e.getFirstName().equals(firstName) && e.getLastName().equals(lastName)) {
-                System.out.println("Сотрудник " + e.getFirstName() + " " + e.getLastName() + " найден.");
-                return e;
-            }
-        }
-        throw new BadEmployeeExceptions();
+        return employees.get(keyForMap);
     }
 
     @Override
-    public List<Employee> showEmployee() {
-        return employees;
+    public Collection<Employee> getAllEmployees() {
+        return Collections.unmodifiableCollection(employees.values());
     }
-
 
 }

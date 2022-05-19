@@ -7,49 +7,51 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.workwithexceptions.Data.Employee;
 import pro.sky.workwithexceptions.Service.EmployeeService;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/hello")
-    public String welcome() {
+    @GetMapping("/")
+    public String greetEmployee() {
         return "Добро пожаловать в БД сотрудников!";
     }
 
     @GetMapping("/add")
-    public Employee add(@RequestParam(value = "firstName") String sf, @RequestParam(value = "lastName") String sl) {
-        Employee result;
-        result = employeeService.addEmployee(sf, sl);
-        return result;
+    public String addEmployee(@RequestParam("firstName") String firstName,
+                              @RequestParam("lastName") String lastName,
+                              @RequestParam("salary") int salary,
+                              @RequestParam("departmentId") int departmentId) {
+        String addedEmployee = employeeService.addEmployee(firstName, lastName, salary, departmentId);
+        return addedEmployee;
     }
 
     @GetMapping("/remove")
-    public Employee remove(@RequestParam(value = "firstName") String sf, @RequestParam(value = "lastName") String sl) {
-        Employee result;
-        result = employeeService.removeEmployee(sf, sl);
-        return result;
+    public String removeEmployee(@RequestParam("firstName") String firstName,
+                                 @RequestParam("lastName") String lastName) {
+        String removedEmployee = employeeService.removeEmployee(firstName, lastName);
+        return removedEmployee;
     }
 
     @GetMapping("/find")
-    public Employee find(@RequestParam(value = "firstName") String sf, @RequestParam(value = "lastName") String sl) {
-        Employee result;
-        result = employeeService.findEmployee(sf, sl);
-        return result;
+    public Employee findEmployee(@RequestParam("firstName") String firstName,
+                                 @RequestParam("lastName") String lastName) {
+        Employee foundEmployee = employeeService.findEmployee(firstName, lastName);
+        return foundEmployee;
     }
 
-    @GetMapping("/showall")
-    public List<Employee> showall() {
-        List<Employee> result;
-        result = employeeService.showEmployee();
-        return result;
+    @GetMapping("/all")
+    public Collection<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
+
 
 }
 
