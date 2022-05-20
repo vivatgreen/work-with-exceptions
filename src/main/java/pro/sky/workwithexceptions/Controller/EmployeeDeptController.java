@@ -21,7 +21,7 @@ public class EmployeeDeptController {
         this.employeeDeptService = employeeDeptService;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public String greetDepartments() {
         return "Добро пожаловать в БД департаментов!";
     }
